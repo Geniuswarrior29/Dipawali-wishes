@@ -1,0 +1,411 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diwali for Pihu</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&family=Yatra+One&display=swap">
+<style>
+/* Layout concept: a night-sky slideshow, one thought per slide, left-aligned and intimate. Gold diya glow for the wishes, rani-pink glow for the apology slides. */
+:root {
+  --night: #1b0a26;
+  --night-2: #2c1139;
+  --gold: #ffb52e;
+  --ember: #e0622a;
+  --rani: #f0457f;
+  --ink: #fff2dc;
+  --soft: #e9cdb6;
+  --line: rgba(255, 181, 46, 0.3);
+  --display: 'Yatra One', 'Rozha One', Georgia, serif;
+  --body: 'Hind', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background-color: var(--night);
+  background-image: linear-gradient(180deg, var(--night) 0%, var(--night-2) 100%);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  overflow: hidden;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  box-sizing: border-box;
+}
+.glow {
+  position: fixed; inset: 0; pointer-events: none;
+  transition: opacity 1.2s ease;
+}
+.glow-gold { background: radial-gradient(ellipse 70% 55% at 80% 12%, rgba(255, 181, 46, 0.22), transparent 70%); opacity: 1; }
+.glow-rani { background: radial-gradient(ellipse 75% 60% at 18% 88%, rgba(240, 69, 127, 0.26), transparent 70%); opacity: 0; }
+body.sorry .glow-gold { opacity: 0.25; }
+body.sorry .glow-rani { opacity: 1; }
+canvas#fx { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+
+.stage { position: relative; height: 100%; z-index: 1; }
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  justify-content: safe center;
+  gap: 18px;
+  padding-block: 20px 96px;
+  max-width: 40rem;
+  margin-inline: auto;
+  overflow-y: auto;
+  opacity: 0; visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease, transform 0.6s ease, visibility 0s linear 0.6s;
+}
+.slide.on { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.slide > * { min-width: 0; }
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold);
+}
+body.sorry .eyebrow { color: #ff8fb4; }
+h1, h2 {
+  margin: 0;
+  font-family: var(--display); font-weight: 400;
+  text-wrap: balance; letter-spacing: 0.005em;
+}
+h1 { font-size: clamp(2.7rem, 12vw, 5.2rem); line-height: 1.02; }
+h2 { font-size: clamp(2rem, 7.4vw, 3.3rem); line-height: 1.12; }
+h1 em, h2 em { font-style: normal; color: var(--gold); }
+body.sorry h2 em { color: #ff8fb4; }
+p { margin: 0; font-size: clamp(1.08rem, 3.6vw, 1.32rem); line-height: 1.62; color: var(--soft); max-width: 34em; text-wrap: pretty; }
+p strong { color: var(--ink); font-weight: 600; }
+.deva { font-family: var(--body); font-size: clamp(1.4rem, 5vw, 2rem); font-weight: 500; color: var(--gold); margin: 0; }
+.hint { font-size: 0.95rem; color: var(--soft); opacity: 0.8; }
+
+.diya-big { width: min(52vw, 230px); }
+.diya svg { display: block; width: 100%; height: auto; overflow: visible; }
+.glow-c { fill: url(#none); }
+.flame { transform-origin: 50px 38px; animation: flick 1.7s ease-in-out infinite; transition: opacity 0.5s ease; }
+.flame-core { fill: #fff3c4; }
+.flame-outer { fill: var(--gold); }
+.bowl { fill: var(--ember); }
+.bowl-rim { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; }
+.wick { fill: #3a1a14; }
+.halo { opacity: 0.9; transition: opacity 0.5s ease; }
+.diya.unlit .flame, .diya.unlit .halo { opacity: 0; }
+@keyframes flick {
+  0%, 100% { transform: scale(1, 1) rotate(-1deg); }
+  35% { transform: scale(0.94, 1.07) rotate(1.5deg); }
+  70% { transform: scale(1.04, 0.95) rotate(-1.5deg); }
+}
+
+.lines { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 0; max-width: 34em; }
+.lines li {
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  font-size: clamp(1.05rem, 3.6vw, 1.28rem); line-height: 1.5;
+  color: var(--ink);
+}
+.lines li:last-child { border-bottom: 1px solid var(--line); }
+body.sorry .lines li { border-color: rgba(240, 69, 127, 0.35); }
+
+.wishes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 20px; margin-top: 4px; max-width: 34em; }
+.wishes div { border-top: 1px solid var(--line); padding-top: 12px; }
+.wishes h3 { margin: 0 0 4px; font-family: var(--display); font-weight: 400; font-size: 1.35rem; color: var(--gold); }
+.wishes p { font-size: 1rem; line-height: 1.5; }
+
+.diyas { display: flex; gap: clamp(4px, 2vw, 14px); align-items: flex-end; max-width: 30rem; }
+.diyas .diya { flex: 1 1 0; min-width: 0; }
+.cta {
+  align-self: flex-start;
+  font: inherit; font-weight: 600; font-size: 1rem;
+  color: var(--night); background: var(--gold);
+  border: 0; border-radius: 999px; padding: 12px 22px;
+  cursor: pointer;
+}
+.cta:hover { background: #ffc65a; }
+.sign { font-family: var(--display); font-size: 1.5rem; color: var(--gold); margin: 0; }
+
+.nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  padding-top: 12px;
+  padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: linear-gradient(0deg, var(--night) 55%, rgba(27, 10, 38, 0));
+}
+.nav-in { max-width: 40rem; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pill {
+  font: inherit; font-weight: 600; font-size: 0.95rem;
+  min-width: 84px; padding: 10px 16px; border-radius: 999px; cursor: pointer;
+  color: var(--ink); background: transparent; border: 1px solid var(--line);
+}
+.pill.main { background: var(--gold); border-color: var(--gold); color: var(--night); }
+.pill:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 6px; align-items: center; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255, 242, 220, 0.28); transition: width 0.3s ease, background 0.3s ease; }
+.dot.on { width: 18px; border-radius: 4px; background: var(--gold); }
+button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+@media (max-width: 420px) {
+  .pill { min-width: 70px; padding: 10px 12px; }
+  .dots { gap: 5px; }
+  .dot { width: 6px; height: 6px; }
+  .dot.on { width: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: opacity 0.2s ease; transform: none; }
+  .flame { animation: none; }
+}
+</style>
+
+<div class="glow glow-gold"></div>
+<div class="glow glow-rani"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<main class="stage" aria-live="polite">
+
+  <section class="slide on" data-mood="wish">
+    <div class="diya diya-big" data-lit="1"></div>
+    <p class="eyebrow">8 November 2026</p>
+    <h1>Happy Diwali, <em>Pihu</em></h1>
+    <p class="deva" lang="hi">शुभ दीपावली</p>
+    <p class="hint">Tap Next or swipe. This one is only for you.</p>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">My wish for you</p>
+    <h2>May every diya you light bring you <em>more light</em></h2>
+    <p>A little more peace, a little more laughter, and a lot more of everything you have been hoping for.</p>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">About you</p>
+    <h2>You are my <em>light</em></h2>
+    <p>Some people make a room brighter just by walking into it. For me, that person is you. Even on my darkest, most confusing days, you are the one thing that feels like home.</p>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">What I love</p>
+    <h2>Little things about <em>you</em></h2>
+    <ul class="lines">
+      <li>Your smile, especially when you are trying to hide it.</li>
+      <li>The way you care about small things most people miss.</li>
+      <li>Your patience with me, even when I don't deserve it.</li>
+      <li>How you make an ordinary day feel like a festival.</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-mood="sorry">
+    <p class="eyebrow">I need to say this</p>
+    <h2>I know I mess things up. <em>Every time.</em></h2>
+    <p>I am not going to pretend otherwise or hide behind excuses. You deserve the truth, and the truth is that I have hurt you more than once.</p>
+  </section>
+
+  <section class="slide" data-mood="sorry">
+    <p class="eyebrow">Sorry</p>
+    <h2>I'm sorry, <em>Pihu</em></h2>
+    <p>For the times I didn't listen. For the words I said without thinking. For the moments I made you feel like you didn't matter. <strong>I am really, truly sorry.</strong></p>
+  </section>
+
+  <section class="slide" data-mood="sorry">
+    <p class="eyebrow">You never deserved that</p>
+    <h2>You always <em>matter</em></h2>
+    <p>If I ever made you feel small, that was my failure, never yours. You are not too sensitive, too much, or too anything. You are exactly the person I want beside me.</p>
+  </section>
+
+  <section class="slide" data-mood="sorry">
+    <p class="eyebrow">The part that doesn't change</p>
+    <h2>But I care about you <em>so much</em></h2>
+    <p>More than my words manage to say, and far more than my mistakes make it look. After every fight and every silence, I still choose you. I will keep choosing you.</p>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">My promise</p>
+    <h2>What I'm going to <em>work on</em></h2>
+    <ul class="lines">
+      <li>Listen first, react later.</li>
+      <li>Say sorry sooner, and mean it.</li>
+      <li>Show up on the small, ordinary days too.</li>
+      <li>Be someone you can feel safe with.</li>
+    </ul>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">Thank you</p>
+    <h2>For staying, and for <em>forgiving</em></h2>
+    <p>Thank you for your patience, for your kindness, and for believing I can be better than my worst moments. I don't say it enough, but I notice everything you do for me.</p>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">Best wishes</p>
+    <h2>This Diwali, I wish you</h2>
+    <div class="wishes">
+      <div><h3>Health</h3><p>Strong, rested, and well looked after.</p></div>
+      <div><h3>Happiness</h3><p>Small joys on every single day.</p></div>
+      <div><h3>Dreams</h3><p>Every goal you have quietly worked for.</p></div>
+      <div><h3>Peace</h3><p>A mind that finally gets to relax.</p></div>
+    </div>
+  </section>
+
+  <section class="slide" data-mood="wish">
+    <p class="eyebrow">One last thing</p>
+    <h2>Light a diya <em>with me</em></h2>
+    <div class="diyas" id="diyas"></div>
+    <button class="cta" id="light" type="button">Light a diya</button>
+    <p id="lit-msg" class="hint">Tap five times. I'll be right here.</p>
+    <p class="sign">Happy Diwali, Pihu. Yours, always.</p>
+  </section>
+
+</main>
+
+<nav class="nav" aria-label="Slides">
+  <div class="nav-in">
+    <button class="pill" id="prev" type="button">Back</button>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <button class="pill main" id="next" type="button">Next</button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  var uid = 0;
+  function diyaSVG(lit) {
+    var id = 'g' + (uid++);
+    return '<svg viewBox="0 0 100 80" aria-hidden="true">' +
+      '<defs><radialGradient id="' + id + '"><stop offset="0" stop-color="#ffb52e" stop-opacity="0.55"/><stop offset="1" stop-color="#ffb52e" stop-opacity="0"/></radialGradient></defs>' +
+      '<circle class="halo" cx="50" cy="26" r="40" fill="url(#' + id + ')"/>' +
+      '<g class="flame"><path class="flame-outer" d="M50 4C62 18 64 29 50 38C36 29 38 18 50 4Z"/><path class="flame-core" d="M50 18C56 25 57 31 50 36C43 31 44 25 50 18Z"/></g>' +
+      '<rect class="wick" x="46" y="36" width="8" height="6" rx="2"/>' +
+      '<path class="bowl" d="M6 42C30 35 70 35 94 42C92 64 74 76 50 76C26 76 8 64 6 42Z"/>' +
+      '<path class="bowl-rim" d="M6 42C30 35 70 35 94 42"/>' +
+      '</svg>';
+  }
+
+  document.querySelectorAll('.diya-big').forEach(function (el) {
+    el.innerHTML = diyaSVG(true);
+    el.classList.add('diya');
+  });
+
+  var row = document.getElementById('diyas');
+  var small = [];
+  for (var k = 0; k < 5; k++) {
+    var d = document.createElement('div');
+    d.className = 'diya unlit';
+    d.innerHTML = diyaSVG(false);
+    row.appendChild(d);
+    small.push(d);
+  }
+
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var dotsEl = document.getElementById('dots');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var dots = slides.map(function () {
+    var s = document.createElement('span');
+    s.className = 'dot';
+    dotsEl.appendChild(s);
+    return s;
+  });
+  var i = 0;
+
+  function show(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, idx) {
+      s.classList.toggle('on', idx === i);
+      s.setAttribute('aria-hidden', idx === i ? 'false' : 'true');
+    });
+    dots.forEach(function (d, idx) { d.classList.toggle('on', idx === i); });
+    document.body.classList.toggle('sorry', slides[i].getAttribute('data-mood') === 'sorry');
+    prev.disabled = i === 0;
+    next.textContent = i === slides.length - 1 ? 'Replay' : 'Next';
+    slides[i].scrollTop = 0;
+  }
+  prev.addEventListener('click', function () { show(i - 1); });
+  next.addEventListener('click', function () { show(i === slides.length - 1 ? 0 : i + 1); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); show(i - 1); }
+  });
+  var tx = 0, ty = 0;
+  document.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  document.addEventListener('touchend', function (e) {
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) show(dx < 0 ? i + 1 : i - 1);
+  }, { passive: true });
+
+  /* Effects: rising embers and diya fireworks */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cv = document.getElementById('fx');
+  var ctx = cv.getContext('2d');
+  var W = 0, H = 0, dpr = 1;
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth; H = window.innerHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var embers = [];
+  for (var e = 0; e < 38; e++) {
+    embers.push({ x: Math.random() * W, y: Math.random() * H, r: 0.8 + Math.random() * 1.8, v: 0.15 + Math.random() * 0.45, p: Math.random() * 6.28 });
+  }
+  var sparks = [];
+  var colors = ['#ffb52e', '#f0457f', '#ff7a3d', '#fff2dc', '#ffd36e'];
+  function burst(x, y) {
+    for (var n = 0; n < 46; n++) {
+      var a = Math.random() * 6.283, sp = 1.2 + Math.random() * 3.6;
+      sparks.push({ x: x, y: y, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 1, c: colors[n % colors.length] });
+    }
+  }
+  function frame() {
+    ctx.clearRect(0, 0, W, H);
+    embers.forEach(function (m) {
+      m.y -= m.v; m.p += 0.02;
+      if (m.y < -4) { m.y = H + 4; m.x = Math.random() * W; }
+      ctx.globalAlpha = 0.35 + 0.3 * Math.sin(m.p);
+      ctx.fillStyle = '#ffb52e';
+      ctx.beginPath(); ctx.arc(m.x + Math.sin(m.p) * 6, m.y, m.r, 0, 6.283); ctx.fill();
+    });
+    for (var s = sparks.length - 1; s >= 0; s--) {
+      var q = sparks[s];
+      q.x += q.vx; q.y += q.vy; q.vy += 0.045; q.vx *= 0.985; q.life -= 0.012;
+      if (q.life <= 0) { sparks.splice(s, 1); continue; }
+      ctx.globalAlpha = q.life;
+      ctx.fillStyle = q.c;
+      ctx.beginPath(); ctx.arc(q.x, q.y, 2, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+    requestAnimationFrame(frame);
+  }
+  if (!reduce) requestAnimationFrame(frame);
+
+  var lit = 0;
+  var btn = document.getElementById('light');
+  var msg = document.getElementById('lit-msg');
+  btn.addEventListener('click', function () {
+    if (lit >= small.length) {
+      small.forEach(function (d) { d.classList.add('unlit'); });
+      lit = 0;
+      btn.textContent = 'Light a diya';
+      msg.textContent = 'Tap five times. I’ll be right here.';
+      return;
+    }
+    small[lit].classList.remove('unlit');
+    lit++;
+    if (lit < small.length) {
+      msg.textContent = lit + ' of 5 lit. Keep going.';
+    } else {
+      msg.textContent = 'All five are glowing for you, Pihu. Happy Diwali.';
+      btn.textContent = 'Light them again';
+      if (!reduce) {
+        [0.25, 0.5, 0.75].forEach(function (f, n) {
+          setTimeout(function () { burst(W * f, H * (0.25 + 0.1 * n)); }, n * 350);
+        });
+      }
+    }
+  });
+
+  show(0);
+})();
+</script>
+
+</body></html>
